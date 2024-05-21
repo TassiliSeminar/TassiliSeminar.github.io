@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tassili Sunday Maths Seminar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .image-container {
+            float: right;
+            margin: 0 20px;
+        }
+        .image-container img {
+            width: 400px;
+            height: 270px;
+        }
+        header {
+            position: relative;
+            color: #000;
+            text-align: center;
+            padding: 150px 0 60px;
+            z-index: 1;
+        }
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://perso.ens-lyon.fr/billel.guelmame/TSMS_page/Tassili.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            z-index: 1000;
+            transition: background 0.3s ease;
+            background: transparent;
+        }
+        nav.scrolled {
+            background: #333333;
+        }
+        nav ul {
+            margin: 0;
+            list-style: none;
+            display: flex;
+        }
+        nav ul li {
+            margin-right: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2em;
+        }
+        nav h1 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+        }
+        .avatar {
+            width: 100%;
+            height: auto;
+        }
+        h2 {
+            color: #314366;
+            font-size: 2em;
+            margin: 20px;
+        }
+        .menu-toggle, .close-menu {
+            display: none;
+        }
+        @media screen and (max-width: 767px) {
+            .image-container img {
+                width: 100%;
+                height: auto;
+                max-width: 150px;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+                color: #fff;
+                font-size: 1.5em;
+                padding: 0 20px;
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background-color: #333;
+                width: 50%;
+                position: fixed;
+                top: 0;
+                left: -50%;
+                height: 100%;
+                transition: left 0.3s ease;
+                padding: 20px 10px;
+            }
+            nav ul.show {
+                display: flex;
+                left: 0;
+            }
+            nav ul li {
+                margin: 20px 0;
+                text-align: center;
+            }
+            .close-menu {
+                display: block;
+                cursor: pointer;
+                font-size: 2em;
+                color: #fff;
+                margin-bottom: 20px;
+                margin: 0 auto 20px auto;
+            }
+        }
+        .aligned-paragraph {
+            text-align: justify;
+            margin-right: 10px;
+            hyphens: auto;
+        }
+        .paragraph {
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        .paragraph-large {
+            font-size: 1.3em;
+        }
+        .paragraph-footer {
+            color: #000;
+            font-size: 0.9em;
+        }
+        .custom-image-container {
+            text-align: center;
+        }
+        .custom-image-container a {
+            margin-right: 40px;
+        }
+        ul {
+            font-size: 1em;
+        }
+        .footnote {
+            font-size: 0.9em;
+            color: #444;
+        }
+        .small-hr {
+            width: 300px;
+            margin: 10px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            page-break-before: always;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .container2 {
+            max-width: 1200px;
+            page-break-before: always;
+            margin: 20px auto;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+        .column {
+            flex: 1;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            .column {
+                flex-basis: 100%;
+                margin-left: 10px;
+            }
+        }
+        .previous-talks-section {
+            margin-top: 40px;
+        }
+        .year-section {
+            margin-bottom: 20px;
+        }
+        .year-header {
+            background-color: #f0f0f0;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            position: relative;
+        }
+        .year-header > .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+        .year-header > .title {
+            margin-left: 20px;
+        }
+        .year-header.active > .arrow {
+            transform: translateY(-50%) rotate(90deg);
+        }
+        .talks-list {
+            display: none;
+            margin-top: 10px;
+        }
+        .talks-list.active {
+            display: block;
+        }
+    </style>
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetPageId = this.getAttribute('href').substring(1);
+                        document.querySelectorAll('.page').forEach(page => {
+                            page.classList.remove('active');
+                        });
+                        document.getElementById(targetPageId).classList.add('active');
+                    }
+                });
+            });
+
+            const menuToggle = document.querySelector('.menu-toggle');
+            const closeMenu = document.querySelector('.close-menu');
+            const menu = document.querySelector('nav ul');
+
+            menuToggle.addEventListener('click', () => {
+                menu.classList.toggle('show');
+            });
+
+            closeMenu.addEventListener('click', () => {
+                menu.classList.remove('show');
+            });
+        });
+
+        function toggleTalks(year) {
+            const talksList = document.getElementById(year);
+            talksList.classList.toggle('active');
+            const yearHeader = document.getElementById(year + '-header');
+            yearHeader.classList.toggle('active');
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="background-image"></div>
+        <nav>
+            <h1><img src="https://perso.ens-lyon.fr/billel.guelmame/TSMS_page/tsms.png" style="width:2.5em; margin-right:.20em; vertical-align: text-bottom;">Tassili Sunday Maths Seminar</h1>
+            <div class="menu-toggle">&#9776;</div>
+            <ul>
+                <li class="close-menu">&times;</li>
+                <li><a href="#Home">Home</a></li>
+                <li><a href="#Previous_talks">Previous talks</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+    <div id="Home" class="page active">
+   
+   
+   
+    <div class="container">
+    <div class="column">
+         <h3 style="text-align:center;"><span style="color:#A52A2A;">Next talk on Sunday, May 26th, 2024 at 6 pm (Paris time)</span></h3>
+<br>
+
+    <h3 style="text-align:center;"><a href="https://www.ihes.fr/~/douba/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Sami Douba</a>, Institut des Hautes Études Scientifiques (IHES)</h3>
+
+
+<p class="paragraph aligned-paragraph"><b>Title:</b> Systoles of hyperbolic manifolds.</p>
+
+
+<p class="paragraph aligned-paragraph"> <b>Abstract:</b>  The systole of a closed hyperbolic manifold M is the length of a shortest closed geodesic in M. In the first part of the talk, we discuss low-dimensional constructions of closed hyperbolic manifolds with prescribed/small systole. In the second part of the talk, we prove using arithmetic techniques that, regardless of the dimension, systoles of closed hyperbolic manifolds are dense in the positive reals. This is joint work with Junzhi Huang.</p>
+<br>
+         <h3 style="text-align:center;"><span style="color:#A52A2A;">Upcoming TSMS talks</span></h3>
+<br>
+
+
+    </div>
+    <div class="column">
+      <h2>Our aims</h2>
+        <ul>
+            <li>Enhance cooperation among young researchers (PhD students, Postdocs, etc.) and senior researchers in mathematics by meeting online each Sunday from 6:00 to 8:00 pm.</li>
+            <li>Share and exchange recent results in various fields of mathematics through weekly presentations, primarily by young researchers.</li>
+            <li>Introduce those interested in mathematics, especially early in their training, to various research directions in mathematics.</li>
+            <li>Provide PhD students an opportunity to present their work in progress within a supportive community of postdoctoral researchers.</li>
+        </ul>
+
+
+
+      <h2>Contact</h2>
+     
+
+     
+        <ul>
+            <p> <b>Email:</b> tsms.seminar@gmail.com</p>
+ <p><a href="https://www.youtube.com/channel/UCB9dnU4nhf7ibx1fXpyZH5w" target="_blank"><img src="https://perso.ens-lyon.fr/billel.guelmame/TSMS_page/YouTube.svg" style="width:3.5em; margin-right:.20em; vertical-align: text-bottom;"></a>
+ <a href="https://www.facebook.com/people/Tassili-Sunday-Maths-Seminar/100074355480062/" target="_blank"><img src="https://www.facebook.com/images/fb_icon_325x325.png" style="width:2.7em; margin-right:.20em; vertical-align: text-bottom;"></a></p>
+        </ul>
+
+
+
+      <h2>Organizers</h2>
+        <ul>
+            <li><a href="https://boukholkhal.perso.math.cnrs.fr/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Mohamed Alaa-Eddine Boukholkhal</a> (PhD Student), ENS de Lyon, France</li>
+            <li><a href="https://scholar.google.com/citations?user=KBv5_2gAAAAJ&hl" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Dahmane Dechicha</a> (ATER), CY Cergy Paris Université, France</li>
+            <li><a href="http://perso.ens-lyon.fr/billel.guelmame/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Billel Guelmame</a> (PostDoc), ENS de Lyon, France</li>
+            <li><a href="https://malekhanounah.github.io/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Malek Hanounah</a> (PhD Student), University of Greifswald, Germany</li>
+            <li><a href="https://wp.nyu.edu/haroune_houamed/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Haroune Houamed</a> (PostDoc), New York University - Abu Dhabi, UAE</li>
+        </ul>
+
+<h2>Former organizers</h2>
+        <ul>
+            <li><a href="https://sites.google.com/view/tahraouiyassine/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Yassine  Tahraoui</a>, SNS di Pisa, Italy (2022-2024)</li>
+            <li><a href="https://sites.google.com/view/mhammedoudrane/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">M'hammed Oudrane</a>, Côte d'Azur University, France (2021-2023)</li>
+            <li><a href="https://scholar.google.fr/citations?user=lGbe3tAAAAAJ&hl" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Sara Dridi</a>, University of Setif 1, Algeria (2021-2022)</li>
+        </ul>
+
+    </div>
+</div>
+   
+   
+   
+    </div>
+   
+    <div id="Previous_talks" class="page">
+   
+     <div class="previous-talks-section">
+     
+     
+     
+     
+     
+     
+     
+     
+               <div class="year-section">
+                <div class="year-header" onclick="toggleTalks('year21-22')" id="year21-22-header" style="text-align:center;"><span class="arrow">></span> <span class="title">Talks 2021-2022</span></div> <!-- Changed order of elements and added a title span -->
+                <div id="year21-22" class="talks-list">
+ <div class="column">    
+
+
+
+<h3 style="text-align:center;">  Sunday October 24th, 2021  </h3>
+<h3 style="text-align:center;">
+    <a href="http://perso.ens-lyon.fr/billel.guelmame/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Billel Guelmame</a> <span style="font-weight:normal;">(University Côte d'Azur, France)</span></h3>
+<div class="container2" style="padding: 0;">  
+    <p class="paragraph aligned-paragraph"><b>Title:</b> On some regularized nonlinear hyperbolic equations</p>
+    <p class="paragraph aligned-paragraph"><b>Abstract:</b> It is known that the solutions of hyperbolic partial differential equations develop discontinuous shocks in finite time even with smooth initial data. Those shock are problematic in the theoretical study and in the numerical computations. To avoid these shocks, one can add some small terms to the equation to obtain "smoother" solutions. The new equation is called a "regularization".<br>
+    In this talk, we present and study some suitable regularizations that conserve the same properties of the original equations.</p>      
+</div>
+
+<br>    
+<hr>
+
+
+   
+<h3 style="text-align:center;">  Sunday October 31st, 2021  </h3>
+<h3 style="text-align:center;">
+    <a href="https://rymsmaimath.wordpress.com/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Rym Smai</a> <span style="font-weight:normal;">(University Of Avignon, France)</span></h3>
+<div class="container2" style="padding: 0;">  
+    <p class="paragraph aligned-paragraph"><b>Title:</b> Conformally flat spacetimes with complete lightlike geodesics</p>
+    <p class="paragraph aligned-paragraph"><b>Abstract:</b> C. Rossi proved that any maximal globally hyperbolic conformally flat spacetime which contains two homotopic lightlike geodesics with same extremities is a finite quotient of the Einstein universe. In the continuity of this result, I am interested in describing maximal globally hyperbolic  (abbrev. MGH) conformally flat spacetimes  with complete lightlike geodesics. In this talk, I will  describe an example of such a spacetime, that we call  Misner domain of the Einstein universe. Under some hypothesis, one prove that the universal covering of a MGH conformally flat spacetime with complete lightlike geodesics contains a Misner strip. The goal would be to prove that any MGH Cauchy compact conformally flat spacetime can be obtained by grafting (or removing) a Misner strip from another one. This would be the Lorentzian analogous of the grafting on hyperbolic surfaces introduced by Thurston</p>      
+</div>
+
+
+<br>    
+<hr>
+
+   
+<h3 style="text-align:center;">  Sunday November 7th, 2021  </h3>
+<h3 style="text-align:center;">
+    <a href="https://wp.nyu.edu/haroune_houamed/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Haroune Houamed</a> <span style="font-weight:normal;">(New York University Abu Dhabi, United Arab Emirates)
+</span></h3>
+<div class="container2" style="padding: 0;">  
+    <p class="paragraph aligned-paragraph"><b>Title:</b> On the analysis of some PDEs arising in Fluid Mechanics and Hydrodynamics</p>
+    <p class="paragraph aligned-paragraph"><b>Abstract:</b> I will be talking about some recent results on the existence, uniqueness, blow-up/global regularity and stability of solutions to the Navier-Stokes, Euler, MHD equations and some  related systems.</p>
+
+<p> <b> Youtube <a href="https://www.youtube.com/watch?v=0I0ikJ6V-7M&ab_channel=TSMSSeminar" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">link</a> </b> </p>    
+</div>
+
+
+
+<br>    
+<hr>
+
+     
+<h3 style="text-align:center;">  Sunday November 14th, 2021  </h3>
+<h3 style="text-align:center;">
+    <a href="https://sites.google.com/site/zhacen/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Zelaci Hacen</a> <span style="font-weight:normal;">(University of El-Oued, Algeria)
+</span></h3>
+<div class="container2" style="padding: 0;">  
+    <p class="paragraph aligned-paragraph"><b>Title:</b> Strange duality at level one for the anti-invariant vector bundles</p>
+    <p class="paragraph aligned-paragraph"><b>Abstract:</b> For a smooth algebraic curve of positive genus over the field of complex numbers, the strange duality says that the space of sections of certain theta bundle on moduli of bundles of rank r and level k is naturally dual to a similar space of sections of rank k and level r. In this talk, I will explain this duality and show that it remains true (at least at level one) on the moduli spaces of anti-invariant vector bundles.</p>
+
+<p> <b> Youtube <a href="https://www.youtube.com/watch?v=WyPrpL_IPuQ&ab_channel=TSMSSeminar" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">link</a> </b> </p>    
+</div>
+
+
+
+
+
+
+
+<br>    
+<hr>
+
+
+
+
+
+<h3 style="text-align:center;">Sunday November 28th, 2021</h3>
+<h3 style="text-align:center;"> <a href="https://sites.google.com/view/mhammedoudrane/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">M'hammed Oudrane</a> <span style="font-weight:normal;">(University of Côte d'Azur, France)</span>
+</h3>
+<div class="container2" style="padding: 0;">
+    <p class="paragraph aligned-paragraph"><b>Title:</b> Regular projections and Lipschitz structures of real singular spaces</p>
+    <p class="paragraph aligned-paragraph"><b>Abstract:</b> The notion of regular projection is a strong tool in Lipschitz geometry of real singularities, it provides a way to prove metric properties of singular spaces by finding a finite number of directions which is transverse to the tangent space at the regular points of the singular set. We will be talking about how to prove the existence of regular projections for definable sets in polynomially bounded o-minimal structures (e.g., semi-algebraic sets) and its application to the study of the Lipschitz structures and Lipschitz cell decomposition of definable sets in o-minimal structures.</p>
+</div>
+
+
+<br>    
+<hr>
+
+
+<h3 style="text-align:center;">Sunday December 5th, 2021</h3>
+<h3 style="text-align:center;">
+ <a href="https://smehidi.perso.math.cnrs.fr/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Sara Mehidi</a> <span style="font-weight:normal;">(University of Toulouse, France)</span>
+</h3>
+<div class="container2" style="padding: 0;">
+    <p class="paragraph aligned-paragraph"><b>Title:</b> Extending torsors via log schemes</p>
+    <p class="paragraph aligned-paragraph"><b>Abstract:</b> We present here an approach to the problem of extension of torsors defined over the generic fiber of a family of curves. The question is to extend both the structural group and the total space of the torsor above the entire family.
+<br>
+The origin of this subject is in the work of Grothendieck, who at the beginning of the years 1960, gave a good definition of the fundamental group of algebraic varieties, based on the notion of étale Galois covers. The problem of extending torsors under constant groups (and of orders prime to the characteristic of the residual field) has been solved, on a general basis, by Grothendieck's fundamental group specialization theory.
+<br>
+When we are interested in algebraic varieties from an arithmetic point of view, it is natural to consider also torsors whose structural group is finite but not necessarily a constant group. We then talk of fppf torsors, with reference to the theory of faithfully flat descent. The point of view defended here is that in order to study the problem of extension of torsors, it is better to place ourselves in a larger frame where we allow the torsors to admit ramification : these are log flat torsors. So, we first search for a log extension for the initial torsor and then see if it comes from an fppf one.</p>
+<p> <b> Youtube <a href="https://www.youtube.com/watch?v=ZUGcCIgfDIU&ab_channel=TSMSSeminar" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">link</a> </b> </p>    
+</div>
+
+
+
+<br>    
+<hr>
+
+
+
+
+<h3 style="text-align:center;">Sunday December 12th, 2021</h3>
+<h3 style="text-align:center;">
+<a href="https://sites.google.com/view/alloutsouheib" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';"> Souheib Allout</a> <span style="font-weight:normal;">(PhD student, Ruhr-University Bochum, Germany)</span>
+</h3>
+<div class="container2" style="padding: 0;">
+    <p class="paragraph aligned-paragraph"><b>Title:</b> Partially hyperbolic autonomous diffeomorphisms</p>
+    <p class="paragraph aligned-paragraph"><b>Abstract:</b> The aim of this talk is to introduce the notions of hyperbolic, partially hyperbolic, autonomous,... diffeomorphisms. The style is to be more into giving examples and raising questions. Finally, we present an algebraic classification of autonomous diffeomorphisms in dimensions two and three.</p>
+<p> <b> Youtube <a href="https://www.youtube.com/watch?v=ENqRDQN1O3o&ab_channel=TSMSSeminar" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">link</a> </b> </p>    
+</div>
+
+
+<br>    
+<hr>
+
+<h3 style="text-align:center;">Sunday January 9th, 2022</h3>
+<h3 style="text-align:center;">
+    <a href="https://sites.google.com/view/adelbetina/accueil" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Adel Betina</a> <span style="font-weight:normal;">(Université de Vienne, Austria)</span>
+</h3>
+<div class="container2" style="padding: 0;">
+    <p class="paragraph aligned-paragraph"><b>Title:</b> On the failure of Gorensteinness at weight 1 Eisenstein points of the eigencurve</p>
+    <p class="paragraph aligned-paragraph"><b>Abstract:</b> Coleman and Mazur introduced the p-adic eigencurve, a rigid analytic space parametrizing the system of Hecke eigenvalues of p-adic modular forms of finite slope. I will present in this talk a joint work with Dimitrov and Pozzi in which we describe the geometry of the eigencurve at irregular weight one Eisenstein series. Such forms belong to the intersection of the Eisenstein locus and the cuspidal locus of the eigencurve. We proved that the cuspidal locus is étale over the weight space at any irregular weight one Eisenstein series. As a corollary, we gave some applications in Iwasawa theory.</p>
+<p> <b> Youtube <a href="https://www.youtube.com/watch?v=JbQ4JsyuUek&ab_channel=TSMSSeminar" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">link</a> </b> </p>    
+</div>
+
+
+
+
+
+
+
+
+
+                      </div>  
+                </div>
+            </div>  
+     
+     
+     
+     
+     
+     
+     
+     
+                 <div class="year-section">
+                <div class="year-header" onclick="toggleTalks('year22-23')" id="year22-23-header" style="text-align:center;"><span class="arrow">></span> <span class="title">Talks 2022-2023</span></div> <!-- Changed order of elements and added a title span -->
+                <div id="year22-23" class="talks-list">
+                 <div class="column">    
+               
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                </div>
+                </div>
+            </div>
+     
+     
+     
+     
+     
+     
+     
+     
+     
+                <div class="year-section">
+                <div class="year-header" onclick="toggleTalks('year23-24')" id="year23-24-header" style="text-align:center;"><span class="arrow">></span> <span class="title">Talks 2023-2024</span></div> <!-- Changed order of elements and added a title span -->
+                <div id="year23-24" class="talks-list">
+ <div class="column">    
+ bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ 
+                 </div>
+                </div>
+            </div>
+           
+     
+     
+
+
+
+           
+
+
+
+
+
+
+        </div>
+    </div>
+</body>
+</html> 

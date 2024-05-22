@@ -199,29 +199,35 @@
         .previous-talks-section {
             margin-top: 40px;
         }
+        
+              .upcoming-talks-section {
+            margin-top: 40px;
+        }
+        
         .year-section {
             margin-bottom: 20px;
         }
-        .year-header {
-            background-color: #f0f0f0;
-            padding: 10px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            position: relative;
-        }
-        .year-header > .arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            transition: transform 0.3s ease;
-        }
-        .year-header > .title {
-            margin-left: 20px;
-        }
-        .year-header.active > .arrow {
-            transform: translateY(-50%) rotate(90deg);
-        }
+.year-header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: relative;
+}
+
+.year-header.active {
+    background-color: #d0d0d0; /* Change this to your desired color when the box is open */
+}
+
+.talks-list {
+    display: none;
+    margin-top: 10px;
+}
+
+.talks-list.active {
+    display: block;
+}
         .talks-list {
             display: none;
             margin-top: 10px;
@@ -264,12 +270,13 @@
             });
         });
 
-        function toggleTalks(year) {
-            const talksList = document.getElementById(year);
-            talksList.classList.toggle('active');
-            const yearHeader = document.getElementById(year + '-header');
-            yearHeader.classList.toggle('active');
-        }
+function toggleTalks(year) {
+    const talksList = document.getElementById(year);
+    talksList.classList.toggle('active');
+    const yearHeader = document.getElementById(year + '-header');
+    yearHeader.classList.toggle('active');
+}
+
     </script>
 </head>
 <body>
@@ -281,7 +288,9 @@
             <ul>
                 <li class="close-menu">&times;</li>
                 <li><a href="#Home">Home</a></li>
+	          <li><a href="#Upcoming_talks">Upcoming talks</a></li>
                 <li><a href="#Previous_talks">Previous talks</a></li>
+
             </ul>
         </nav>
     </header>
@@ -311,6 +320,24 @@
    
    
     <div class="container">
+
+    <div class="column">
+
+
+<p class="paragraph aligned-paragraph" style="margin-left: 20px;">  
+ &nbsp;&nbsp; The <a href="https://en.wikipedia.org/wiki/Tassili_n%27Ajjer" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Tassili</a> Sunday Maths Seminar (TSMS) aims to connect and familiarize young and senior mathematics researchers through online meetings every Sunday from 6:00 p.m. to 8:00 p.m. These seminars feature presentations of recent mathematical results, primarily provided by young researchers, and serve as a platform to introduce various research directions to those in the early stages of their training. In addition, the seminar provides PhD students with an opportunity to present their work in progress within a supportive environment.
+
+ 
+          <p style="margin-left: 20px;"> <b>Email:</b> tsms.seminar@gmail.com</p>
+ <p style="margin-left: 20px;"><a href="https://www.youtube.com/channel/UCB9dnU4nhf7ibx1fXpyZH5w" target="_blank"><img src="https://perso.ens-lyon.fr/billel.guelmame/TSMS_page/YouTube.svg" style="width:3.5em; margin-right:.20em; vertical-align: text-bottom;"></a>
+ <a href="https://www.facebook.com/people/Tassili-Sunday-Maths-Seminar/100074355480062/" target="_blank"><img src="https://www.facebook.com/images/fb_icon_325x325.png" style="width:2.7em; margin-right:.20em; vertical-align: text-bottom;"></a></p>
+</p>
+
+
+
+    </div>
+
+
     <div class="column">
          <h3 style="text-align:center;"><span style="color:#A52A2A;">Next talk on Sunday, May 26th, 2024 at 6 pm (Paris time)</span></h3>
 <br>
@@ -322,36 +349,29 @@
 
 
 <p class="paragraph aligned-paragraph"> <b>Abstract:</b>  The systole of a closed hyperbolic manifold M is the length of a shortest closed geodesic in M. In the first part of the talk, we discuss low-dimensional constructions of closed hyperbolic manifolds with prescribed/small systole. In the second part of the talk, we prove using arithmetic techniques that, regardless of the dimension, systoles of closed hyperbolic manifolds are dense in the positive reals. This is joint work with Junzhi Huang.</p>
-<br>
-         <h3 style="text-align:center;"><span style="color:#A52A2A;">Upcoming TSMS talks</span></h3>
-<br>
+
+    </div>
+
+
+
 
 
     </div>
-    <div class="column">
-      <h2>Our aims</h2>
-        <ul>
-            <li>Enhance cooperation among young researchers (PhD students, Postdocs, etc.) and senior researchers in mathematics by meeting online each Sunday from 6:00 to 8:00 pm.</li>
-            <li>Share and exchange recent results in various fields of mathematics through weekly presentations, primarily by young researchers.</li>
-            <li>Introduce those interested in mathematics, especially early in their training, to various research directions in mathematics.</li>
-            <li>Provide PhD students an opportunity to present their work in progress within a supportive community of postdoctoral researchers.</li>
-        </ul>
 
 
 
-      <h2>Contact</h2>
+     
+     
+     
+     
      
 
      
-        <ul>
-            <p> <b>Email:</b> tsms.seminar@gmail.com</p>
- <p><a href="https://www.youtube.com/channel/UCB9dnU4nhf7ibx1fXpyZH5w" target="_blank"><img src="https://perso.ens-lyon.fr/billel.guelmame/TSMS_page/YouTube.svg" style="width:3.5em; margin-right:.20em; vertical-align: text-bottom;"></a>
- <a href="https://www.facebook.com/people/Tassili-Sunday-Maths-Seminar/100074355480062/" target="_blank"><img src="https://www.facebook.com/images/fb_icon_325x325.png" style="width:2.7em; margin-right:.20em; vertical-align: text-bottom;"></a></p>
-        </ul>
-
-
-
-      <h2>Organizers</h2>
+     
+                 <div class="year-section">
+                <div class="year-header active" onclick="toggleTalks('Organizers')" id="Organizers-header" style="text-align:center;"> <span class="title">Organizers</span></div> 
+                <div id="Organizers" class="talks-list active">
+ <div class="column">    
         <ul>
             <li><a href="https://boukholkhal.perso.math.cnrs.fr/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Mohamed Alaa-Eddine Boukholkhal</a> (PhD Student), ENS de Lyon, France</li>
             <li><a href="https://scholar.google.com/citations?user=KBv5_2gAAAAJ&hl" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Dahmane Dechicha</a> (ATER), CY Cergy Paris Université, France</li>
@@ -359,34 +379,95 @@
             <li><a href="https://malekhanounah.github.io/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Malek Hanounah</a> (PhD Student), University of Greifswald, Germany</li>
             <li><a href="https://wp.nyu.edu/haroune_houamed/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Haroune Houamed</a> (PostDoc), New York University - Abu Dhabi, UAE</li>
         </ul>
+ 
 
-<h2>Former organizers</h2>
+           
+                      </div>
+                </div>
+            </div>
+     
+
+     
+                      <div class="year-section">
+                <div class="year-header" onclick="toggleTalks('F_organizers')" id="F_organizers-header" style="text-align:center;"><span class="title">Former Organizers</span></div> 
+                <div id="F_organizers" class="talks-list">
+ <div class="column">  
+     
+
         <ul>
             <li><a href="https://sites.google.com/view/tahraouiyassine/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Yassine  Tahraoui</a>, SNS di Pisa, Italy (2022-2024)</li>
             <li><a href="https://sites.google.com/view/mhammedoudrane/" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">M'hammed Oudrane</a>, Côte d'Azur University, France (2021-2023)</li>
             <li><a href="https://scholar.google.fr/citations?user=lGbe3tAAAAAJ&hl" target="_blank" style="color:blue; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Sara Dridi</a>, University of Setif 1, Algeria (2021-2022)</li>
         </ul>
+                 </div>
+                </div>
+            </div>
 
-    </div>
-</div>
+
+
+
+<br><br><br><br><br>
+
+
+
+
+
+
+
    
    
    
     </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+           <div id="Upcoming_talks" class="page">
+   
+     <div class="Upcoming-talks-section">  
+
+
+
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
    
     <div id="Previous_talks" class="page">
    
      <div class="previous-talks-section">
      
-     
-     
-     
-     
-     
-     
-     
+
+
                <div class="year-section">
-                <div class="year-header" onclick="toggleTalks('year21-22')" id="year21-22-header" style="text-align:center;"><span class="arrow">></span> <span class="title">Talks 2021-2022</span></div> <!-- Changed order of elements and added a title span -->
+                <div class="year-header" onclick="toggleTalks('year21-22')" id="year21-22-header" style="text-align:center;"> <span class="title">Talks 2021-2022</span></div> <!-- Changed order of elements and added a title span -->
                 <div id="year21-22" class="talks-list">
  <div class="column">    
 
@@ -539,7 +620,7 @@ When we are interested in algebraic varieties from an arithmetic point of view, 
      
      
                  <div class="year-section">
-                <div class="year-header" onclick="toggleTalks('year22-23')" id="year22-23-header" style="text-align:center;"><span class="arrow">></span> <span class="title">Talks 2022-2023</span></div> <!-- Changed order of elements and added a title span -->
+                <div class="year-header" onclick="toggleTalks('year22-23')" id="year22-23-header" style="text-align:center;"> <span class="title">Talks 2022-2023</span></div> 
                 <div id="year22-23" class="talks-list">
                  <div class="column">    
                
@@ -557,7 +638,7 @@ bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
      
      
                 <div class="year-section">
-                <div class="year-header" onclick="toggleTalks('year23-24')" id="year23-24-header" style="text-align:center;"><span class="arrow">></span> <span class="title">Talks 2023-2024</span></div> <!-- Changed order of elements and added a title span -->
+                <div class="year-header" onclick="toggleTalks('year23-24')" id="year23-24-header" style="text-align:center;"> <span class="title">Talks 2023-2024</span></div> 
                 <div id="year23-24" class="talks-list">
  <div class="column">    
  bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
@@ -568,17 +649,13 @@ bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
            
      
      
-
+        </div>
+    </div>
 
 
            
 
 
 
-
-
-
-        </div>
-    </div>
 </body>
 </html> 
